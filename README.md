@@ -1,10 +1,10 @@
-# facebook-api
+# Devlib/Facebook-API
 Simple Facebook API wrapper for PHP
 
-###Install
+### Install
 `composer require devlib/facebook-api`
 
-##Usage
+### Usage
 ```php
 use \DevLib\API\Facebook\App;
 
@@ -17,13 +17,13 @@ $callback    = ('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?
 $app         = new App($appId, $appSecret, $callback, $permissions);
 ```
 
-##Generate login url
+### Generate login url
 ```php
 //display link for authentication
-echo '<h4><a href="' . $app->getLoginURL() . '">Login with Facebook</a></h4>';
+echo '<a href="' . $app->getLoginURL() . '">Login with Facebook</a>';
 ```
 
-##Retrieve user info
+### Retrieve user info
 ```php
 try{
 
