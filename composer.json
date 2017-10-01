@@ -1,0 +1,26 @@
+{
+    "name": "devlib/facebook-api",
+    "description": "Simple facebook API wrapper",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "adrian7",
+            "email": "adrian.silimon@yahoo.com"
+        }
+    ],
+    "require": {
+        "facebook/graph-sdk": "^5.6"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.3",
+        "fzaninotto/faker": "^1.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "DevLib\\": "src/"
+        }
+    }
+}
