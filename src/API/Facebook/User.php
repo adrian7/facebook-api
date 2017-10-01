@@ -1,7 +1,7 @@
 <?php
 /**
- * DevLib - Utils - Facebook Login
- * @author adrian7 (adrian@studentmoneysaver.co.uk)
+ * DevLib - Facebook API User Class
+ * @author adrian7
  * @version 1.0
  */
 

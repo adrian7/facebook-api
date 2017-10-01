@@ -1,7 +1,7 @@
 <?php
 /**
  * DevLib - Facebook log in sample
- * @author adrian7 (adrian@studentmoneysaver.co.uk)
+ * @author adrian7
  * @version 1.0
  */
 

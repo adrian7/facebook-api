@@ -1,7 +1,7 @@
 <?php
 /**
- * DevLib - Utils - Graph Access Provider class
- * @author adrian7 (adrian@scrollapp.net)
+ * DevLib - Facebook API Graph Access Provider Class
+ * @author adrian7
  * @version 1.0
  */
 
