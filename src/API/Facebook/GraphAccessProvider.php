@@ -69,15 +69,18 @@ class GraphAccessProvider{
     /**
      * Retrieve a graph access provider instance
      * @param array $params
+     * @param null|string $instanceId
      *
-     * @return GraphAccessProvider
+     * @return mixed
      */
-    public static function getInstance(array $params){
+    public static function getInstance(array $params, $instanceId=NULL){
 
         if( ! isset($params['app_id']) or ! isset($params['app_secret']) )
             throw new \InvalidArgumentException("Missing app_id or app_secret from input params... .");
 
-        $instanceId = substr(strval($params['app_id']), 0, 7);
+        $instanceId = empty($instanceId) ?
+            substr( strval($params['app_id']), 0, 7 ) :
+            $instanceId;
 
         if( ! isset( self::$instances[$instanceId] ) ){
 

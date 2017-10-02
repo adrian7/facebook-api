@@ -7,6 +7,7 @@
 
 namespace DevLib\API\Facebook;
 
+use Facebook\Facebook;
 use Facebook\Authentication\OAuth2Client;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Exceptions\FacebookResponseException;
@@ -50,12 +51,13 @@ class App{
     protected $provider;
 
     /**
-     * FB Login Constructor.
+     * FB App Constructor.
      *
      * @param $appId
      * @param $appSecret
      * @param $callbackURL
      * @param array $permissions
+     * @param null $persistentDataHandler
      * @param string $defaultGraphVersion
      */
     public function __construct(
@@ -63,17 +65,23 @@ class App{
         $appSecret,
         $callbackURL,
         $permissions=['id', 'email'],
-        $defaultGraphVersion='v2.10'
+        $persistentDataHandler=NULL,
+        $defaultGraphVersion='latest'
     ) {
 
         $this->appId               = $appId;
         $this->callbackUrl         = $callbackURL;
 
+        $defaultGraphVersion = ( 'latest' == $defaultGraphVersion ) ?
+            Facebook::DEFAULT_GRAPH_VERSION :
+            $defaultGraphVersion;
+
         //init provider
         $this->provider = GraphAccessProvider::getInstance([
-            'app_id'                => $appId,
-            'app_secret'            => $appSecret,
-            'default_graph_version' => $defaultGraphVersion
+            'app_id'                    => $appId,
+            'app_secret'                => $appSecret,
+            'persistent_data_handler'   => $persistentDataHandler,
+            'default_graph_version'     => $defaultGraphVersion
         ]);
 
         //init redirect helper
@@ -82,6 +90,14 @@ class App{
         //set permissions
         $this->setPermissions($permissions);
 
+    }
+
+    public static function create(){
+        //TODO Allow creation using static
+    }
+
+    public static function withGraphAccessProvider(GraphAccessProvider $provider){
+        //TODO
     }
 
     /**
