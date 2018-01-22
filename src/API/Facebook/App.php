@@ -92,14 +92,6 @@ class App{
 
     }
 
-    public static function create(){
-        //TODO Allow creation using static
-    }
-
-    public static function withGraphAccessProvider(GraphAccessProvider $provider){
-        //TODO
-    }
-
     /**
      * @param $message
      * @param string $type

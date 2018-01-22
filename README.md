@@ -39,3 +39,7 @@ catch (\Facebook\Exceptions\FacebookAuthorizationException $e){
 }
 ```
 
+###Facebook API Reference:
+ - [Permissions Reference - Facebook Login](https://developers.facebook.com/docs/facebook-login/permissions)
+ - [Graph API Reference](https://developers.facebook.com/docs/graph-api/reference/)
+
