@@ -8,7 +8,6 @@
 namespace DevLib;
 
 use DevLib\API\Facebook\App;
-use DevLib\API\Facebook\GraphAccessProvider;
 use Facebook\PersistentData\PersistentDataInterface;
 
 class FacebookApp{
@@ -21,14 +20,40 @@ class FacebookApp{
     protected $app = NULL;
 
     /**
+     * Cache app params hash
+     * @var string|null
+     */
+    protected $version = NULL;
+
+    /**
      * @var array
      */
-    protected $params = [];
+    protected $params = [
+        'appId'                 => NULL,
+        'appSecret'             => NULL,
+        'callbackURL'           => NULL,
+        'permissions'           => [],
+        'persistentDataHandler' => NULL,
+        'defaultGraphVersion'   => 'latest'
+    ];
 
+    /**
+     * Create new Facebook App
+     * @param $id
+     * @param $secret
+     *
+     * @return FacebookApp
+     */
     public static function create($id, $secret){
         return new self($id, $secret);
     }
 
+    /**
+     * FacebookApp constructor.
+     *
+     * @param $appId
+     * @param $appSecret
+     */
     protected function __construct($appId, $appSecret) {
 
         //determine a default callback url
@@ -45,45 +70,102 @@ class FacebookApp{
             $callback = self::DEFAULT_RETURN_URL;
 
 
-        //init app
-        $this->app = new App($appId, $appSecret, $callback);
+        //init params
+        $this->addParams([
+            'appId'         => $appId,
+            'appSecret'     => $appSecret,
+            'callbackURL'   => $callback
+        ]);
 
     }
 
+    /**
+     * Add parameters
+     * @param $key
+     * @param null $value
+     *
+     * @return $this
+     */
+    protected function addParams($key, $value=NULL){
+
+        if( is_string($key) ){
+
+            // key=>value parameter
+            if( isset($this->params[$key]) ){
+
+                $this->params[$key]     = $value;
+                $this->params['hash']   = time(); //TODO find better hash stamp
+
+            }
+            else
+                throw new \InvalidArgumentException("Unsupported parameter {$key}... ");
+
+        }
+        else if( is_array($key) )
+            // map
+            foreach ($key as $k=>$v)
+                $this->addParams($k, $v);
+
+        else if( is_object($key) and $a = get_object_vars($key) )
+            foreach ($a as $k=>$v)
+                $this->addParams($k, $v);
+
+        //return object
+        return $this;
+
+    }
+
+    /**
+     * App object generator
+     * @return App|null
+     */
     protected function app(){
-        //TODO... app generator...
+
+        if ($this->version != $this->params['hash'] )
+            //create app object
+            $this->app = new App(
+                $this->params['appId'],
+                $this->params['appSecret'],
+                $this->params['callbackURL'],
+                $this->params['permissions'],
+                $this->params['persistentDataHandler'],
+                $this->params['defaultGraphVersion']
+            );
+
+        //update version
+        $this->version = $this->params['hash'];
+
+        //serve app
+        return $this->app;
+
     }
 
     public function withCallbackURL($url){
-        //TODO..
+        return $this->addParams('callbackURL', $url);
     }
 
     public function withLatestGraphVersion(){
-        //TODO...
+        return $this->addParams('defaultGraphVersion', 'latest');
     }
 
     public function withGraphVersion($version){
-        //TODO...
+        return $this->addParams('defaultGraphVersion', $version);
     }
 
     public function withPermissions(array $permissions){
-        //TODO...
+        return $this->addParams('permissions', $permissions);
     }
 
     public function withPersistentDataHandler(PersistentDataInterface $handler){
-        //TODO...
+        return $this->addParams('persistentDataHandler', $handler);
     }
 
-    public function withGraphAccessProvider(GraphAccessProvider $provider){
-        //TODO...
+    public function getLoginURL(){
+        return $this->app()->getLoginURL();
     }
 
-    protected function getLoginURL(){
-        //TODO...
-    }
-
-    protected function getUser(){
-        //TODO..
+    public function getUser(){
+        return $this->app()->getCurrentUser();
     }
 
 }
