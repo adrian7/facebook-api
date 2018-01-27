@@ -14,7 +14,9 @@ $appSecret = getenv('FACEBOOK_APP_SECRET');
 $permissions = ['email', 'user_posts'];
 $callback    = ('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?callback=1');
 
-$app         = new App($appId, $appSecret, $callback, $permissions);
+$app         = App::create($appId, $appSecret)
+                   ->withPermissions($permissions)
+                   ->withCallbackURL($callback);
 ```
 
 ### Generate login url
@@ -27,7 +29,7 @@ echo '<a href="' . $app->getLoginURL() . '">Login with Facebook</a>';
 ```php
 try{
 
-    $user = $app->getCurrentUser();
+    $user = $app->getUser();
     $data = $user->get(['id', 'name', 'email'])->getGraphUser();
 
     //successful log in

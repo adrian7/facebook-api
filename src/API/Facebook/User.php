@@ -82,7 +82,11 @@ class User {
     }
 
     /**
+     * Retrieve facebook user id
      * @return null|string
+     * @throws FacebookResponseException
+     * @throws FacebookSDKException
+     * @throws \ErrorException
      */
     protected function getId(){
 
