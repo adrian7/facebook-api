@@ -17,7 +17,7 @@ use Facebook\Exceptions\FacebookResponseException;
  * Class User
  * @package DevLib\API\Facebook
  */
-class User {
+class User implements \JsonSerializable {
 
     /**
      * @var AccessToken|null
@@ -122,7 +122,9 @@ class User {
         $path.= $limit ? ( '&limit=' . $limit ) : '' ;
 
         if( empty( $this->accessToken ) )
-            throw new \ErrorException("Object is missing the access token... . Please check the documentation.");
+            throw new \ErrorException(
+                "Object is missing the access token... . Please check the documentation."
+            );
 
         try {
             // Returns a `Facebook\FacebookResponse` object
@@ -178,9 +180,26 @@ class User {
 
     /**
      * @return string
+     * @throws FacebookResponseException
+     * @throws FacebookSDKException
+     * @throws \ErrorException
      */
     public function __toString() {
         return ( $s = $this->getId() ) ? $s : '';
     }
 
+    /**
+     * @return array|mixed
+     * @throws FacebookResponseException
+     * @throws FacebookSDKException
+     * @throws \ErrorException
+     */
+    public function jsonSerialize() {
+
+        if( $this->accessToken )
+            return [ 'id' => $this->getId() ];
+
+        throw new \ErrorException("Cannot serialize empty object... .");
+
+    }
 }

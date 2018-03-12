@@ -1,6 +1,6 @@
 <?php
 /**
- * DevLib - Facebook log in sample
+ * DevLib - Facebook log in example
  * @author adrian7
  * @version 1.0
  */
@@ -38,7 +38,7 @@ if( isset($_GET['callback']) ) {
         echo ( '<h3><i>#' . $data->getId() . '</i> ' . $data->getEmail() );
 
     }catch (\Facebook\Exceptions\FacebookSDKException $e){
-        echo ('Error: ' . $e->getMessage() );
+        echo ( 'Error: ' . $e->getMessage() );
     }
 
 }
